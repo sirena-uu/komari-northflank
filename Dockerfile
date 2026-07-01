@@ -1,5 +1,5 @@
 FROM ghcr.io/komari-monitor/komari:latest
-
+ARG CACHEBUST=1
 RUN apk add --no-cache git bash tar gzip dcron tzdata
 
 COPY entrypoint.sh /entrypoint.sh
