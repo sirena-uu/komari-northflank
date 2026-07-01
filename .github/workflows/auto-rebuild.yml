@@ -2,14 +2,20 @@ name: Trigger Rebuild
 
 on:
   schedule:
-    - cron: '0 2 * * 1'  # 每周一凌晨2点
+    - cron: '0 2 * * 1'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 空提交触发重建
         run: |
           git config user.email "actions@github.com"
