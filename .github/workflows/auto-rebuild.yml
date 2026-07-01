@@ -16,9 +16,12 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 空提交触发重建
+      - name: 更新时间戳触发重建
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git commit --allow-empty -m "触发自动更新 $(date +%Y-%m-%d)"
+          # 每次更新 Dockerfile 里的时间戳注释，强制破坏缓存
+          sed -i "s/ARG CACHEBUST=.*/ARG CACHEBUST=$(date +%s)/" Dockerfile
+          git add Dockerfile
+          git commit -m "强制更新 $(date +%Y-%m-%d)"
           git push
